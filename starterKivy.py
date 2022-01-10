@@ -1,41 +1,54 @@
-import kivy
 from kivy.app import App
-from kivy.core import text
-from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.textinput import TextInput
+from kivy.uix.label import Label
+from kivy.uix.image import Image
 from kivy.uix.button import Button
+from kivy.uix.textinput import TextInput
 
-class MyGridLayout(GridLayout):
-    # Initialize infinite keywords
-    def __init__(self, **kwargs):
-        # Call grid layout constructor
-        super(MyGridLayout, self).__init__(**kwargs)
-
-        # Set Columns
-        self.cols = 2
-
-        # Add widgets
-        self.add_widget(Label(text="Name: "))
-        # Add Input Box
-        self.name = TextInput(multiline=False)
-        self.add_widget(self.name)
-
-        # Add widgets
-        self.add_widget(Label(text="Faborite Pizza: "))
-        # Add Input Box
-        self.pizza = TextInput(multiline=False)
-        self.add_widget(self.pizza)
-
-        # Add widgets
-        self.add_widget(Label(text="Favorite Color: "))
-        # Add Input Box
-        self.color = TextInput(multiline=False)
-        self.add_widget(self.color)
-
-class MyApp(App):
+class SayHello(App):
     def build(self):
-        return MyGridLayout()
+        self.window = GridLayout()
+        self.window.cols = 1
+        self.window.size_hint = (0.6, 0.7)
+        self.window.pos_hint = {"center_x": 0.5, "center_y": 0.5,}
 
-if __name__ == '__main__':
-    MyApp().run()
+        # add widgets to window
+
+        # image widget
+        self.window.add_widget(Image(source="logo.png"))
+
+        # label widget
+        self.greeting = Label(
+            text="What's your name?",
+            font_size = 18,
+            color = '#00FFCE',
+            )
+        self.window.add_widget(self.greeting)
+
+        # text input widget
+        self.user = TextInput(
+            multiline = False,
+            padding_y= (20,20),
+            size_hint = (1, 0.5)
+            )
+        self.window.add_widget(self.user)
+
+        # button widget
+        self.button = Button(
+            text="GREET",
+            size_hint = (1, 0.5),
+            bold = True,
+            background_color = "#00FFCE",
+            #background_normal = '', # this will lighten the color of the button
+            )
+        self.button.bind(on_press=self.callback)
+        self.window.add_widget(self.button)
+
+        return self.window
+
+    def callback(self, instance):
+        self.greeting.text = "Hello " + self.user.text + "!"
+
+
+if __name__ == "__main__":
+    SayHello().run()
